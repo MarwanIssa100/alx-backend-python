@@ -29,7 +29,7 @@ def paginate_users(page_size: int, offset: int) -> List[Dict[str, Any]]:
     
     try:
         cursor = connection.cursor(dictionary=True)
-        query = "SELECT * FROM user_data ORDER BY user_id LIMIT %s OFFSET %s"
+        query = "SELECT * FROM user_data LIMIT %s OFFSET %s"
         cursor.execute(query, (page_size, offset))
         
         users = cursor.fetchall()
