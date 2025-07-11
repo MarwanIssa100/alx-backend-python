@@ -1,6 +1,8 @@
 import asyncio
 import aiosqlite
 
+tasks = ["async def async_fetch_users()", "async def async_fetch_older_users()"]
+
 async def async_fetch_users(db_path):
     async with aiosqlite.connect(db_path) as conn:
         async with conn.cursor() as cursor:
