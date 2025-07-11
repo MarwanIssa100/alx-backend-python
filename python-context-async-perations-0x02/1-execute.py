@@ -1,5 +1,5 @@
 import sqlite3
-class DatabaseConnection:
+class ExecuteQuery:
     def __init__(self, db_path):
         self.db_path = db_path
         self.connection = None
@@ -11,11 +11,12 @@ class DatabaseConnection:
     def __exit__(self, exc_type, exc_value, traceback):
         self.connection.close()
 
-with DatabaseConnection('users.db') as conn:
+with ExecuteQuery('users.db') as conn:
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM users")
+    cursor.execute("SELECT * FROM users where age > ?",(25,))
     users = cursor.fetchall()
     print(users)
+
 
 
 
