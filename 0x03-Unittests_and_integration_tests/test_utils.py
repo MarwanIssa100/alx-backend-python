@@ -1,25 +1,30 @@
 #!/usr/bin/env python3
-from utils import access_nested_map , get_json , memoize
+from utils import access_nested_map, get_json, memoize
 import unittest
-from unittest.mock import Mock , patch
+from unittest.mock import Mock, patch
 from parameterized import parameterized
 import requests
 
+
 class TestAccessNestedMap(unittest.TestCase):
+
     @parameterized.expand([
-        ( {"a": 1}, ("a",), 1 ),
-        ( {"a": {"b": 2}}, ("a",),{"b":2}),
-        ( {"a": {"b": 2}}, ("a", "b"), 2 ),  # empty path returns the map itself
+        ({"a": 1}, ("a",), 1),
+        ({"a": {"b": 2}}, ("a",), {"b": 2}),
+        ({"a": {"b": 2}}, ("a", "b"), 2),
+        ({"a": {"b": {"c": 42}}}, ("a", "b", "c"), 42),
+        ({"x": {"y": {"z": "found"}}}, ("x", "y", "z"), "found"),
+        ({"a": 1}, (), {"a": 1}),  # empty path returns the map itself
     ])
     def test_access_nested_map(self, nested_map, path, expected):
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
     @parameterized.expand([
-        ( {"a": 1}, ("b",), "b" ),
-        ( {"a": {"b": 2}}, ("a", "c"), "c" ),
-        ( {"a": {"b": 2}}, ("a", "b", "c"), "c" ),
-        ( {"a": {"b": {"c": 42}}}, ("a", "x"), "x" ),
-        ( {"a": 1}, ("a", "b"), "b" ),
+        ({"a": 1}, ("b",), "b"),
+        ({"a": {"b": 2}}, ("a", "c"), "c"),
+        ({"a": {"b": 2}}, ("a", "b", "c"), "c"),
+        ({"a": {"b": {"c": 42}}}, ("a", "x"), "x"),
+        ({"a": 1}, ("a", "b"), "b"),
     ])
     def test_access_nested_map_missing_key(self, nested_map, path, missing_key):
         with self.assertRaises(KeyError) as cm:
@@ -34,7 +39,9 @@ class TestAccessNestedMap(unittest.TestCase):
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
 
+
 class TestGetJson(unittest.TestCase):
+
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False}),
@@ -48,23 +55,26 @@ class TestGetJson(unittest.TestCase):
             result = get_json(test_url)
             self.assertEqual(result, test_payload)
             mock_get.assert_called_once_with(test_url)
-            
+
+
 class TestMemoize(unittest.TestCase):
-    
+
     def test_memoize(self):
-        class Testclass:
+        class TestClass:
             def a_method(self):
                 return 42
 
             @memoize
             def a_property(self):
                 return self.a_method()
-        test_instance = Testclass()
+
+        test_instance = TestClass()
         with patch.object(test_instance, 'a_method', return_value=42) as mock_method:
             self.assertEqual(test_instance.a_property, 42)
             mock_method.assert_called_once()
             self.assertEqual(test_instance.a_property, 42)
             mock_method.assert_called_once()
+
 
 if __name__ == '__main__':
     unittest.main()    
