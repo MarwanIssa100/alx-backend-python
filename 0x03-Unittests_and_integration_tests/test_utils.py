@@ -29,7 +29,8 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": {"c": 42}}}, ("a", "x"), "x"),
         ({"a": 1}, ("a", "b"), "b"),
     ])
-    def test_access_nested_map_missing_key(self, nested_map, path, missing_key):
+    def test_access_nested_map_missing_key(
+            self, nested_map, path, missing_key):
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, path)
         self.assertEqual(
@@ -92,4 +93,4 @@ class TestMemoize(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()    
+    unittest.main()
