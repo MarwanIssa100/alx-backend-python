@@ -2,12 +2,13 @@
 import unittest
 from unittest.mock import Mock, patch
 
-import requests
 from parameterized import parameterized
 
 from utils import access_nested_map, get_json, memoize
 
 
+# The class `TestAccessNestedMap` contains unit tests for the `access_nested_map` function.
+# It tests the function's ability to retrieve values from nested dictionaries based on a given path.
 class TestAccessNestedMap(unittest.TestCase):
 
     @parameterized.expand([
@@ -51,7 +52,7 @@ class TestAccessNestedMap(unittest.TestCase):
                 path
             )
 
-
+# The class `TestGetJson` contains a unit test for the `get_json` function.
 class TestGetJson(unittest.TestCase):
 
     @parameterized.expand([
@@ -69,6 +70,8 @@ class TestGetJson(unittest.TestCase):
             mock_get.assert_called_once_with(test_url)
 
 
+# The class `TestMemoize` contains a unit test for a memoization decorator applied to a method and
+# property within a test class.
 class TestMemoize(unittest.TestCase):
 
     def test_memoize(self):
