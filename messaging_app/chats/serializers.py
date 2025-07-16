@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ['user_id']
 
 class MessageSerializer(serializers.ModelSerializer):
-    message_body = CharField(max_length=1000)
+    message_body = serializers.CharField(max_length=1000)
     
     class Meta:
         model = Message
@@ -19,7 +19,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class ConversationSerializer(serializers.ModelSerializer):
-    message = SerializerMethodField()
+    message = serializers.SerializerMethodField()
     
     def get_message(self, obj):
         messages = obj.messages.all()
@@ -38,6 +38,6 @@ class ConversationSerializer(serializers.ModelSerializer):
                 user_instance = user.objects.get(user_id=participant.user_id)
                 conversation.participants.add(user_instance)
             except user.DoesNotExist:
-                raise ValidationError(f"User with ID {participant.user_id} does not exist")
+                raise serializers.ValidationError(f"User with ID {participant.user_id} does not exist")
         return conversation
         
