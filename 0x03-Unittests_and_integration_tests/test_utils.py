@@ -4,17 +4,28 @@ import unittest
 from parameterized import parameterized
 
 class TestAccessNestedMap(unittest.TestCase):
-    
     @parameterized.expand([
-        ({"a": {"b": {"c": 42}}}, ("a", "b", "c"), 42)])
-    def test_access_nested_map(self):
-        nested_map = {"a": {"b": {"c": 42}}}
-        self.assertEqual(access_nested_map(nested_map, ("a", "b", "c")), 42)
-        
-    def test_access_nested_map_missing_key(self):
-        nested_map = {"a": {"b": {"c": 42}}}
-        with self.assertRaises(KeyError, msg="KeyError should be raised"):
-            access_nested_map(nested_map, ("a", "b", "d"))
+        ( {"a": 1}, ("a",), 1 ),
+        ( {"a": {"b": 2}}, ("a",), {"b": 2} ),
+        ( {"a": {"b": 2}}, ("a", "b"), 2 ),
+        ( {"a": {"b": {"c": 42}}}, ("a", "b", "c"), 42 ),
+        ( {"x": {"y": {"z": "found"}}}, ("x", "y", "z"), "found" ),
+        ( {"a": 1}, (), {"a": 1} ),  # empty path returns the map itself
+    ])
+    def test_access_nested_map(self, nested_map, path, expected):
+        self.assertEqual(access_nested_map(nested_map, path), expected)
+
+    @parameterized.expand([
+        ( {"a": 1}, ("b",), "b" ),
+        ( {"a": {"b": 2}}, ("a", "c"), "c" ),
+        ( {"a": {"b": 2}}, ("a", "b", "c"), "c" ),
+        ( {"a": {"b": {"c": 42}}}, ("a", "x"), "x" ),
+        ( {"a": 1}, ("a", "b"), "b" ),
+    ])
+    def test_access_nested_map_missing_key(self, nested_map, path, missing_key):
+        with self.assertRaises(KeyError) as cm:
+            access_nested_map(nested_map, path)
+        self.assertEqual(cm.exception.args[0], missing_key)
 
 if __name__ == '__main__':
     unittest.main()    
