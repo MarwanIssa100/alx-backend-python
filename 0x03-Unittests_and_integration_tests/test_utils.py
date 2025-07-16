@@ -1,3 +1,6 @@
+"""
+Unit tests for utils.py functions: access_nested_map, get_json, and memoize.
+"""
 #!/usr/bin/env python3
 from utils import access_nested_map, get_json, memoize
 import unittest
@@ -17,7 +20,10 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, (), {"a": 1}),  # empty path returns the map itself
     ])
     def test_access_nested_map(self, nested_map, path, expected):
-        self.assertEqual(access_nested_map(nested_map, path), expected)
+        self.assertEqual(
+            access_nested_map(nested_map, path),
+            expected
+        )
 
     @parameterized.expand([
         ({"a": 1}, ("b",), "b"),
@@ -39,7 +45,10 @@ class TestAccessNestedMap(unittest.TestCase):
     ])
     def test_access_nested_map_exception(self, nested_map, path):
         with self.assertRaises(KeyError):
-            access_nested_map(nested_map, path)
+            access_nested_map(
+                nested_map,
+                path
+            )
 
 
 class TestGetJson(unittest.TestCase):
