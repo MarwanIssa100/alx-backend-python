@@ -36,7 +36,8 @@ class TestAccessNestedMap(unittest.TestCase):
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, path)
         self.assertEqual(
-            cm.exception.args[0], missing_key
+            cm.exception.args[0],
+            missing_key
         )
 
     @parameterized.expand([
@@ -82,11 +83,13 @@ class TestMemoize(unittest.TestCase):
         test_instance = TestClass()
         with patch.object(test_instance, 'a_method', return_value=42) as mock_method:
             self.assertEqual(
-                test_instance.a_property, 42
+                test_instance.a_property,
+                42
             )
             mock_method.assert_called_once()
             self.assertEqual(
-                test_instance.a_property, 42
+                test_instance.a_property,
+                42
             )
             mock_method.assert_called_once()
 
