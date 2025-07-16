@@ -1,6 +1,3 @@
-
-# Unit tests for utils.py functions: access_nested_map, get_json, and memoize.
-
 #!/usr/bin/env python3
 from utils import access_nested_map, get_json, memoize
 import unittest
