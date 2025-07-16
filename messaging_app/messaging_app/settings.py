@@ -51,6 +51,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+DEFAULT_AUTHENTICATION_CLASSES = [
+    'rest_framework.permissions.IsAuthenticated',
+    'rest_framework.authentication.SessionAuthentication',
+]
+
 ROOT_URLCONF = 'messaging_app.urls'
 
 TEMPLATES = [
