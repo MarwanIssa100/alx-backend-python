@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'chats',
+    # 'drf_nested_routers',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,8 @@ DEFAULT_AUTHENTICATION_CLASSES = [
 ]
 
 ROOT_URLCONF = 'messaging_app.urls'
+
+DEFAULT_AUTH_USER_MODEL = 'chats.user'
 
 TEMPLATES = [
     {
