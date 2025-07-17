@@ -29,7 +29,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": {"c": 42}}}, ("a", "b", "c"), 42),
         ({"x": {"y": {"z": "found"}}}, ("x", "y", "z"), "found"),
         # empty path returns the map itself
-        ({"a": 1}, (), {"a": 1}),  
+        ({"a": 1}, (), {"a": 1}),
     ])
     def test_access_nested_map(self, nested_map, path, expected):
         """
@@ -57,7 +57,10 @@ class TestAccessNestedMap(unittest.TestCase):
             KeyError
         ) as cm:
             access_nested_map(nested_map, path)
-        self.assertEqual(cm.exception.args[0], missing_key)
+        self.assertEqual(
+            cm.exception.args[0],
+            missing_key
+        )
 
     @parameterized.expand([
         ({}, ("a",)),
@@ -95,7 +98,9 @@ class TestGetJson(unittest.TestCase):
 
             result = get_json(test_url)
             self.assertEqual(result, test_payload)
-            mock_get.assert_called_once_with(test_url)
+            mock_get.assert_called_once_with(
+                test_url
+            )
 
 
 class TestMemoize(unittest.TestCase):
