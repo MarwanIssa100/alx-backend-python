@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Unit tests for utils module functions: access_nested_map, get_json, memoize."""
+"""
+Unit tests for utils module functions:
+access_nested_map, get_json, and memoize.
+"""
 
 import unittest
 from unittest.mock import Mock, patch
@@ -16,7 +19,7 @@ from utils import (
 # the `access_nested_map` function.
 # It tests retrieving values from nested dictionaries based on a given path.
 class TestAccessNestedMap(unittest.TestCase):
-
+    """Unit tests for the access_nested_map function from utils."""
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
