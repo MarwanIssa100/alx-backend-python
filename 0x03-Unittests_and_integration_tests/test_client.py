@@ -22,7 +22,7 @@ class TestGithubOrgClient(unittest.TestCase):
             client = GithubOrgClient(org_name)
             self.assertEqual(client.org, expected)
             
-    def test_public_repos(self):
+    def test_public_repos_url(self):
         """
         Test that public_repos returns the correct list of repository names.
         """
