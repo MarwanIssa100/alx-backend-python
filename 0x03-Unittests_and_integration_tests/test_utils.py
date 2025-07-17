@@ -15,12 +15,13 @@ from utils import (
     memoize,
 )
 
-# The class `TestAccessNestedMap` contains unit tests for
-# the `access_nested_map` function.
-# It tests retrieving values from nested dictionaries based on a given path.
+
 class TestAccessNestedMap(unittest.TestCase):
-    """Unit tests for the access_nested_map function from utils."""
-    
+    """
+    Unit tests for the access_nested_map function from the utils module.
+    This function retrieves a value from a nested dictionary using a tuple path.
+    """
+
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
@@ -30,7 +31,10 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, (), {"a": 1}),  # empty path returns the map itself
     ])
     def test_access_nested_map(self, nested_map, path, expected):
-        """Test that access_nested_map returns the correct value for valid paths."""
+        """
+        Test that access_nested_map returns the correct value
+        for valid nested dictionary paths.
+        """
         self.assertEqual(
             access_nested_map(nested_map, path),
             expected
@@ -43,35 +47,42 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": {"c": 42}}}, ("a", "x"), "x"),
         ({"a": 1}, ("a", "b"), "b"),
     ])
-    def test_access_nested_map_missing_key(
-            self, nested_map, path, missing_key):
+    def test_access_nested_map_missing_key(self, nested_map, path, missing_key):
+        """
+        Test that access_nested_map raises a KeyError
+        when accessing a missing key in the path.
+        """
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, path)
-        self.assertEqual(
-            cm.exception.args[0],
-            missing_key
-        )
+        self.assertEqual(cm.exception.args[0], missing_key)
 
     @parameterized.expand([
         ({}, ("a",)),
         ({"a": 1}, ("a", "b")),
     ])
     def test_access_nested_map_exception(self, nested_map, path):
+        """
+        Test that access_nested_map raises a KeyError
+        when any key in the path does not exist.
+        """
         with self.assertRaises(KeyError):
-            access_nested_map(
-                nested_map,
-                path
-            )
+            access_nested_map(nested_map, path)
 
 
-# The class `TestGetJson` contains a unit test for the `get_json` function.
 class TestGetJson(unittest.TestCase):
+    """
+    Unit tests for the get_json function from the utils module.
+    This function fetches and parses a JSON response from a given URL.
+    """
 
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False}),
     ])
     def test_get_json(self, test_url, test_payload):
+        """
+        Test that get_json returns the correct payload from a mocked HTTP response.
+        """
         with patch('requests.get') as mock_get:
             mock_response = Mock()
             mock_response.json.return_value = test_payload
@@ -82,11 +93,17 @@ class TestGetJson(unittest.TestCase):
             mock_get.assert_called_once_with(test_url)
 
 
-# The class `TestMemoize` contains a unit test for a memoization decorator
-# applied to a method and property within a test class.
 class TestMemoize(unittest.TestCase):
+    """
+    Unit tests for the memoize decorator from the utils module.
+    It ensures that decorated methods are cached after the first call.
+    """
 
     def test_memoize(self):
+        """
+        Test that a method decorated with @memoize is only called once
+        and its return value is cached on subsequent accesses.
+        """
         class TestClass:
             def a_method(self):
                 return 42
@@ -96,20 +113,11 @@ class TestMemoize(unittest.TestCase):
                 return self.a_method()
 
         test_instance = TestClass()
-        with patch.object(
-            test_instance,
-            'a_method',
-            return_value=42
-        ) as mock_method:
-            self.assertEqual(
-                test_instance.a_property,
-                42
-            )
+
+        with patch.object(test_instance, 'a_method', return_value=42) as mock_method:
+            self.assertEqual(test_instance.a_property, 42)
             mock_method.assert_called_once()
-            self.assertEqual(
-                test_instance.a_property,
-                42
-            )
+            self.assertEqual(test_instance.a_property, 42)
             mock_method.assert_called_once()
 
 
