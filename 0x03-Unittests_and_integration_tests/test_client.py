@@ -11,9 +11,6 @@ from utils import (
 )
 
 # The class `TestAccessNestedMap` contains unit tests
-# for the `access_nested_map` function.
-# It tests the function's ability to retrieve values from nested dictionaries
-# based on a given path.
 class TestAccessNestedMap(unittest.TestCase):
 
     @parameterized.expand([
@@ -77,7 +74,6 @@ class TestGetJson(unittest.TestCase):
 
 
 # The class `TestMemoize` contains a unit test for a memoization decorator
-# applied to a method and property within a test class.
 class TestMemoize(unittest.TestCase):
 
     def test_memoize(self):
