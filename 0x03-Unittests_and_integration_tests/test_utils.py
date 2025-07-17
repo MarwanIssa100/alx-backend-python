@@ -1,15 +1,20 @@
-
 #!/usr/bin/env python3
+"""Unit tests for utils module functions: access_nested_map, get_json, memoize."""
+
 import unittest
 from unittest.mock import Mock, patch
 
 from parameterized import parameterized
 
-from utils import access_nested_map, get_json, memoize
+from utils import (
+    access_nested_map,
+    get_json,
+    memoize,
+)
 
-
-# The class `TestAccessNestedMap` contains unit tests for the `access_nested_map` function.
-# It tests the function's ability to retrieve values from nested dictionaries based on a given path.
+# The class `TestAccessNestedMap` contains unit tests for
+# the `access_nested_map` function.
+# It tests retrieving values from nested dictionaries based on a given path.
 class TestAccessNestedMap(unittest.TestCase):
 
     @parameterized.expand([
@@ -53,6 +58,7 @@ class TestAccessNestedMap(unittest.TestCase):
                 path
             )
 
+
 # The class `TestGetJson` contains a unit test for the `get_json` function.
 class TestGetJson(unittest.TestCase):
 
@@ -71,8 +77,8 @@ class TestGetJson(unittest.TestCase):
             mock_get.assert_called_once_with(test_url)
 
 
-# The class `TestMemoize` contains a unit test for a memoization decorator applied to a method and
-# property within a test class.
+# The class `TestMemoize` contains a unit test for a memoization decorator
+# applied to a method and property within a test class.
 class TestMemoize(unittest.TestCase):
 
     def test_memoize(self):
@@ -85,7 +91,11 @@ class TestMemoize(unittest.TestCase):
                 return self.a_method()
 
         test_instance = TestClass()
-        with patch.object(test_instance, 'a_method', return_value=42) as mock_method:
+        with patch.object(
+            test_instance,
+            'a_method',
+            return_value=42
+        ) as mock_method:
             self.assertEqual(
                 test_instance.a_property,
                 42
