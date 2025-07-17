@@ -19,7 +19,8 @@ from utils import (
 class TestAccessNestedMap(unittest.TestCase):
     """
     Unit tests for the access_nested_map function from the utils module.
-    This function retrieves a value from a nested dictionary using a tuple path.
+    This function retrieves a value from a nested dictionary
+    using a tuple path.
     """
 
     @parameterized.expand([
