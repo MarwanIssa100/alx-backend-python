@@ -22,7 +22,11 @@ class TestGithubOrgClient(unittest.TestCase):
         Test that the org method
         returns the correct organization data.
         """
-        with patch.object(GithubOrgClient, 'org', new_callable=PropertyMock) as mock_org:
+        with patch.object(
+            GithubOrgClient,
+            'org',
+            new_callable=PropertyMock
+        ) as mock_org:
             mock_org.return_value = expected
             client = GithubOrgClient(org_name)
             self.assertEqual(client.org, expected)
