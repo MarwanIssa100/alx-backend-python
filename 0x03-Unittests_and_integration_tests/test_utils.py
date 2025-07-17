@@ -32,10 +32,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, (), {"a": 1}),
     ])
     def test_access_nested_map(self, nested_map, path, expected):
-        """
-        Test that access_nested_map returns the correct value
-        for valid nested dictionary paths.
-        """
+        """Test access_nested_map returns correct value for valid paths."""
         self.assertEqual(
             access_nested_map(nested_map, path),
             expected
@@ -49,10 +46,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, ("a", "b"), "b"),
     ])
     def test_access_nested_map_missing_key(self, nested_map, path, missing_key):
-        """
-        Test that access_nested_map raises a KeyError
-        when accessing a missing key in the path.
-        """
+        """Test access_nested_map raises KeyError for missing keys."""
         with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, path)
         self.assertEqual(
@@ -65,10 +59,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, ("a", "b")),
     ])
     def test_access_nested_map_exception(self, nested_map, path):
-        """
-        Test that access_nested_map raises a KeyError
-        when any key in the path does not exist.
-        """
+        """Test access_nested_map raises KeyError for invalid paths."""
         with self.assertRaises(KeyError):
             access_nested_map(nested_map, path)
 
@@ -84,10 +75,7 @@ class TestGetJson(unittest.TestCase):
         ("http://holberton.io", {"payload": False}),
     ])
     def test_get_json(self, test_url, test_payload):
-        """
-        Test that get_json returns the correct payload
-        from a mocked HTTP response.
-        """
+        """Test get_json returns correct payload from mocked response."""
         with patch('requests.get') as mock_get:
             mock_response = Mock()
             mock_response.json.return_value = test_payload
@@ -105,10 +93,7 @@ class TestMemoize(unittest.TestCase):
     """
 
     def test_memoize(self):
-        """
-        Test that a method decorated with @memoize is only called once
-        and its return value is cached on subsequent accesses.
-        """
+        """Test @memoize caches method results after first call."""
         class TestClass:
             def a_method(self):
                 return 42
