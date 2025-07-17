@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+A github org client
+"""
 import unittest
 from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
@@ -48,7 +51,7 @@ class TestGithubOrgClient(unittest.TestCase):
         test_url = "http://test_url"
         org_name = "test_org"
         with patch.object(GithubOrgClient, '_public_repos_url', 
-                         new_callable=PropertyMock) as mock_url:
+                        new_callable=PropertyMock) as mock_url:
             mock_url.return_value = test_url
             client = GithubOrgClient(org_name)
             repos = client.public_repos()
