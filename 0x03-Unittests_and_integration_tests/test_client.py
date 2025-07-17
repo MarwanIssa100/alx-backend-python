@@ -65,6 +65,17 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(repos, ["repo1", "repo2", "repo3"])
             mock_url.assert_called_once()
             mock_get_json.assert_called_once_with(test_url)
+            
+    def test_has_license(self):
+        """
+        Test that has_license correctly identifies repositories with a specific license.
+        """
+        repo_with_license = {"license": {"key": "MIT"}}
+        repo_without_license = {"license": None}
+        self.assertTrue(GithubOrgClient.has_license(repo_with_license, "MIT"))
+        self.assertFalse(GithubOrgClient.has_license(repo_without_license, "MIT"))
+        with self.assertRaises(AssertionError):
+            GithubOrgClient.has_license(repo_with_license, None)
 
 
 if __name__ == '__main__':
