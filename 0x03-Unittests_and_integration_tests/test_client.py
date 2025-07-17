@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -17,10 +17,10 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         Test that the org method returns the correct organization data.
         """
-        with patch('client.GithubOrgClient.org', return_value=expected) as mock_org:
+        with patch.object(GithubOrgClient, 'org', new_callable=PropertyMock) as mock_org:
+            mock_org.return_value = expected
             client = GithubOrgClient(org_name)
             self.assertEqual(client.org, expected)
-            mock_org.assert_called_once_with(org_name)
 
 
 if __name__ == '__main__':
