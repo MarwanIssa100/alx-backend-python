@@ -6,6 +6,8 @@ import unittest
 from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
+from parameterized import parameterized_class
+import fixtures
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -82,6 +84,57 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         self.assertEqual(GithubOrgClient.has_license(repo, license_key), expected)
 
+@parameterized_class([
+    {
+        "org_payload": fixtures.TEST_PAYLOAD[0][0],
+        "repos_payload": fixtures.TEST_PAYLOAD[0][1],
+        "expected_repos": fixtures.TEST_PAYLOAD[0][2],
+        "apache2_repos": fixtures.TEST_PAYLOAD[0][3],
+    }
+])
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """
+    Integration tests for the GithubOrgClient class.
+    """
+    @classmethod
+    def setUpClass(cls):
+        """
+        Set up the test environment by patching requests.get.
+        """
+        cls.get_patcher = patch('requests.get')
+        mock_get = cls.get_patcher.start()
+
+        def side_effect(url):
+            class MockResponse:
+                def __init__(self, payload):
+                    self._payload = payload
+                def json(self):
+                    return self._payload
+            if url == GithubOrgClient.ORG_URL.format(org="google"):
+                return MockResponse(cls.org_payload)
+            elif url == cls.org_payload["repos_url"]:
+                return MockResponse(cls.repos_payload)
+            return MockResponse(None)
+
+        mock_get.side_effect = side_effect
+
+    @classmethod
+    def tearDownClass(cls):
+        """
+        Stop patching requests.get.
+        """
+        cls.get_patcher.stop()
+
+    def test_public_repos(self):
+        """
+        Test public_repos returns expected repo names.
+        """
+        client = GithubOrgClient("google")
+        self.assertEqual(client.public_repos(), self.expected_repos)
+        self.assertEqual(
+            client.public_repos(license="apache-2.0"),
+            self.apache2_repos
+        )
 
 if __name__ == '__main__':
     unittest.main()
