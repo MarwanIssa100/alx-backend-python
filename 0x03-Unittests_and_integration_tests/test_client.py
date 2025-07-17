@@ -7,8 +7,8 @@ from unittest.mock import patch, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
+
 class TestGithubOrgClient(unittest.TestCase):
-    
     """
     Unit tests for the GithubOrgClient class.
     """
@@ -18,9 +18,8 @@ class TestGithubOrgClient(unittest.TestCase):
         ("microsoft", {"login": "microsoft", "id": 2}),
     ])
     def test_org(self, org_name, expected):
-        
         """
-        Test that the org method 
+        Test that the org method
         returns the correct organization data.
         """
         with patch.object(GithubOrgClient, 'org', new_callable=PropertyMock) as mock_org:
@@ -62,6 +61,7 @@ class TestGithubOrgClient(unittest.TestCase):
             self.assertEqual(repos, ["repo1", "repo2", "repo3"])
             mock_url.assert_called_once()
             mock_get_json.assert_called_once_with(test_url)
+
 
 if __name__ == '__main__':
     unittest.main()
