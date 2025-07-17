@@ -20,6 +20,7 @@ from utils import (
 # It tests retrieving values from nested dictionaries based on a given path.
 class TestAccessNestedMap(unittest.TestCase):
     """Unit tests for the access_nested_map function from utils."""
+    
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
@@ -29,6 +30,7 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": 1}, (), {"a": 1}),  # empty path returns the map itself
     ])
     def test_access_nested_map(self, nested_map, path, expected):
+        """Test that access_nested_map returns the correct value for valid paths."""
         self.assertEqual(
             access_nested_map(nested_map, path),
             expected
