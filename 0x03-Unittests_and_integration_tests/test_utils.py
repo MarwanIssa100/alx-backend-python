@@ -28,7 +28,8 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a", "b"), 2),
         ({"a": {"b": {"c": 42}}}, ("a", "b", "c"), 42),
         ({"x": {"y": {"z": "found"}}}, ("x", "y", "z"), "found"),
-        ({"a": 1}, (), {"a": 1}),  # empty path returns the map itself
+        # empty path returns the map itself
+        ({"a": 1}, (), {"a": 1}),  
     ])
     def test_access_nested_map(self, nested_map, path, expected):
         """
@@ -52,7 +53,9 @@ class TestAccessNestedMap(unittest.TestCase):
         Test that access_nested_map raises a KeyError
         when accessing a missing key in the path.
         """
-        with self.assertRaises(KeyError) as cm:
+        with self.assertRaises(
+            KeyError
+        ) as cm:
             access_nested_map(nested_map, path)
         self.assertEqual(cm.exception.args[0], missing_key)
 
@@ -83,7 +86,9 @@ class TestGetJson(unittest.TestCase):
         """
         Test that get_json returns the correct payload from a mocked HTTP response.
         """
-        with patch('requests.get') as mock_get:
+        with patch(
+            'requests.get'
+        ) as mock_get:
             mock_response = Mock()
             mock_response.json.return_value = test_payload
             mock_get.return_value = mock_response
@@ -114,7 +119,11 @@ class TestMemoize(unittest.TestCase):
 
         test_instance = TestClass()
 
-        with patch.object(test_instance, 'a_method', return_value=42) as mock_method:
+        with patch.object(
+            test_instance,
+            'a_method',
+            return_value=42
+        ) as mock_method:
             self.assertEqual(test_instance.a_property, 42)
             mock_method.assert_called_once()
             self.assertEqual(test_instance.a_property, 42)
