@@ -52,9 +52,7 @@ class TestAccessNestedMap(unittest.TestCase):
         Test that access_nested_map raises a KeyError
         when accessing a missing key in the path.
         """
-        with self.assertRaises(
-            KeyError
-        ) as cm:
+        with self.assertRaises(KeyError) as cm:
             access_nested_map(nested_map, path)
         self.assertEqual(
             cm.exception.args[0],
@@ -86,20 +84,17 @@ class TestGetJson(unittest.TestCase):
     ])
     def test_get_json(self, test_url, test_payload):
         """
-        Test that get_json returns the correct payload from a mocked HTTP response.
+        Test that get_json returns the correct payload
+        from a mocked HTTP response.
         """
-        with patch(
-            'requests.get'
-        ) as mock_get:
+        with patch('requests.get') as mock_get:
             mock_response = Mock()
             mock_response.json.return_value = test_payload
             mock_get.return_value = mock_response
 
             result = get_json(test_url)
             self.assertEqual(result, test_payload)
-            mock_get.assert_called_once_with(
-                test_url
-            )
+            mock_get.assert_called_once_with(test_url)
 
 
 class TestMemoize(unittest.TestCase):
