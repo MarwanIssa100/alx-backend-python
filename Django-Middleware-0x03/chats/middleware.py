@@ -77,3 +77,17 @@ class OffensiveLanguageMiddleware :
         else:
             ip = request.META.get('REMOTE_ADDR')
         return ip
+    
+class RolepermissionMiddleware:
+    """
+    Middleware to restrict access based on user roles.
+    """
+    
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.user.is_authenticated:
+            if not request.user.has_role('admin'):
+                return Response({"detail": "You do not have permission to view this resource."}, status=403)
+        return self.get_response(request)
