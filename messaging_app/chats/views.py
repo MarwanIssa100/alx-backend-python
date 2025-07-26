@@ -49,8 +49,13 @@ class MessageViewSet(viewsets.ModelViewSet):
     filterset_class = MessageFilter
 
     def get_queryset(self):
+        user_id = self.request.user.user_id
         conversation_id = self.kwargs.get('conversation_id')
-        return self.queryset.filter(conversation__conversation_id=conversation_id)
+        # Only messages in conversations the user participates in
+        return self.queryset.filter(
+            conversation__conversation_id=conversation_id,
+            conversation__participants__user_id=user_id
+        )
     
     def perform_create(self, serializer):
         serializer.save(sender=self.request.user)
