@@ -1,5 +1,13 @@
 from datetime import datetime
 from rest_framework.response import Response
+import logging
+
+# Configure logging for requests
+logging.basicConfig(
+    filename='requests.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 class RequestLoggingMiddleware :
     """
@@ -12,7 +20,8 @@ class RequestLoggingMiddleware :
     def __call__(self, request):
         # Log the request method and path
         user = request.user if request.user.is_authenticated else "Anonymous"
-        print(f"{datetime.now()} - User: {user} - Path: {request.path}")
+        log_message = f"{datetime.now()} - User: {user} - Path: {request.path} - Method: {request.method}"
+        logging.info(log_message)
         
         # Call the next middleware or view
         response = self.get_response(request)
