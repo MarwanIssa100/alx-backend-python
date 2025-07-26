@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'chats.middleware.RequestLoggingMiddleware',
     'chats.middleware.RestrictAccessByTimeMiddleware',
     'chats.middleware.OffensiveLanguageMiddleware',
-    'cahts.middleware.RolepermissionMiddleware',
+    'chats.middleware.RolepermissionMiddleware',
 ]
 
 REST_FRAMEWORK = {
