@@ -1,7 +1,7 @@
 from rest_framework import permissions , BasePermission
 from rest_framework.decorators import action
 
-class IsParticipant(BasePermission):
+class IsParticipantOfConversation(BasePermission):
     """
     Custom permission to only allow participants of a conversation to access it.
     """

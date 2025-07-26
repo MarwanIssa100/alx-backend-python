@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from django_filters import rest_framework as filters
 from .models import Conversation, Message, user
 from .serializers import ConversationSerializer, MessageSerializer
-from .permissions import IsParticipant
+from .permissions import IsParticipantOfConversation
 from .auth import CustomAuthentication
 # Create your views here.
 
@@ -49,7 +49,7 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     filterset_class = MessageFilter
-    permission_classes = [IsParticipant]
+    permission_classes = [IsParticipantOfConversation]
     
     def get_queryset(self):
         user_id = self.request.user.user_id
