@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response 
 from django.contrib.auth.models import User
 from .models import Message 
-from .managers import UnreadMessageManager
+from .managers import UnreadMessagesManager
 
 # Create your views here.
 
@@ -51,7 +51,7 @@ def get_unread_messages(request):
     """
     View to get all unread messages for the authenticated user.
     """
-    unread_messages = UnreadMessageManager().get_queryset().filter(receiver=request.user).only('content', 'sender')
+    unread_messages = UnreadMessagesManager().get_queryset().filter(receiver=request.user).only('content', 'sender')
     serialized_unread_messages = []
     
     for message in unread_messages:
