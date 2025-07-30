@@ -52,7 +52,7 @@ def get_unread_messages(request):
     """
     View to get all unread messages for the authenticated user.
     """
-    unread_messages = Message.unread.unread_for_user(request.user)
+    unread_messages = Message.unread.unread_for_user(request.user).only('sender', 'content')
     serialized_unread_messages = []
     
     for message in unread_messages:
