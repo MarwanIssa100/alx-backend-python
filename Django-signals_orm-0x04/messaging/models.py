@@ -6,7 +6,7 @@ class Message(models.Model):
     receiver = models.ManyToManyField(User, related_name='received_messages')
     content = models.TextField()
     parent_message = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
-    read = models.BooleanField(default=False)
+    unread = models.BooleanField(default=False)
     edited = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     
@@ -40,6 +40,4 @@ class MessageHistory(models.Model):
     edited_at = models.DateTimeField(auto_now_add=True)
 
 
-class UnreadMessageManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(read=False)
+

@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response 
 from django.contrib.auth.models import User
-from .models import Message , UnreadMessageManager
+from .models import Message 
+from .managers import UnreadMessageManager
 
 # Create your views here.
 
