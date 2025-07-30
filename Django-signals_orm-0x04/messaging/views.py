@@ -16,12 +16,31 @@ def delete_user(request, user_id):
     except User.DoesNotExist:
         return Response({"error": "User not found."}, status=404)
     
+    
+def get_messages(request):
+    """
+    View to get all messages for the authenticated user.
+    """
+    messages = Message.objects.filter(sender=request.user) | Message.objects.filter(receiver=request.user)
+    serialized_messages = []
+    
+    for message in messages:
+        serialized_messages.append({
+            'id': message.id,
+            'content': message.content,
+            'sender': [user.username for user in message.sender.all()],
+            'receiver': [user.username for user in message.receiver.all()],
+            'timestamp': message.timestamp,
+            'edited': message.edited
+        })
+    
+    return Response({"messages": serialized_messages}, status=200)
 def thread_messages(request, message_id):
     """
     View to get the thread of messages for a given message ID.
     """
     try:
-        message = Message.objects.prefetch_related('sender' , 'receiver').filter(sender = request.user , receiver = request.user)
+        message = Message.objects.filter(sender = request.user , receiver = request.user).select_related('sender', 'receiver')
         thread = message.get_thread()
         return Response({"thread": thread}, status=200)
     except Message.DoesNotExist:
