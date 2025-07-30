@@ -21,7 +21,7 @@ def thread_messages(request, message_id):
     View to get the thread of messages for a given message ID.
     """
     try:
-        message = Message.objects.get(id=message_id)
+        message = Message.objects.prefetch_related('sender' , 'receiver').filter(sender = request.user , receiver = request.user)
         thread = message.get_thread()
         return Response({"thread": thread}, status=200)
     except Message.DoesNotExist:
