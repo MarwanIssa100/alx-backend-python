@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 # Create your models here.
 class Message(models.Model):
     sender  = models.ManyToManyField(User, related_name='sent_messages')
     receiver = models.ManyToManyField(User, related_name='received_messages')
     content = models.TextField()
     parent_message = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+    read = models.BooleanField(default=False)
     edited = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     
@@ -29,7 +29,6 @@ class Message(models.Model):
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
-    read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     
     
@@ -40,3 +39,7 @@ class MessageHistory(models.Model):
     edited_by = models.ForeignKey(User, on_delete=models.CASCADE)
     edited_at = models.DateTimeField(auto_now_add=True)
 
+
+class UnreadMessageManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(read=False)
