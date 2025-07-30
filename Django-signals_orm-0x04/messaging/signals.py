@@ -1,6 +1,16 @@
 from .models import Message , Notification
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save ,pre_save
 from django.dispatch import receiver
+
+
+
+@receiver(pre_save, sender=Message)
+def message_pre_save(sender, instance, **kwargs):
+    if instance.edited:
+        print(f"Message is being edited: {instance.content} from {instance.sender.all()} to {instance.receiver.all()}")
+    else:
+        print(f"New message being created: {instance.content} from {instance.sender.all()} to {instance.receiver.all()}")
+
 
 @receiver(post_save, sender=Message)
 def message_saved(sender, instance, created, **kwargs):

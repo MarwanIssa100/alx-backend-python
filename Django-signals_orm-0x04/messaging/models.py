@@ -6,6 +6,7 @@ class Message(models.Model):
     sender  = models.ManyToManyField(User, related_name='sent_messages')
     receiver = models.ManyToManyField(User, related_name='received_messages')
     content = models.TextField()
+    edited = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     
 
