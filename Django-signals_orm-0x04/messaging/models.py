@@ -16,3 +16,12 @@ class Notification(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     read = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    
+class MessageEditHistory(models.Model):
+    message = models.ForeignKey(Message, on_delete=models.CASCADE)
+    old_content = models.TextField()
+    new_content = models.TextField()
+    edited_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    edited_at = models.DateTimeField(auto_now_add=True)
+

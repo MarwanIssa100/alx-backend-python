@@ -1,4 +1,4 @@
-from .models import Message , Notification
+from .models import Message , Notification ,MessageEditHistory
 from django.db.models.signals import post_save ,pre_save
 from django.dispatch import receiver
 
@@ -7,7 +7,8 @@ from django.dispatch import receiver
 @receiver(pre_save, sender=Message)
 def message_pre_save(sender, instance, **kwargs):
     if instance.edited:
-        print(f"Message is being edited: {instance.content} from {instance.sender.all()} to {instance.receiver.all()}")
+        MessageEditHistory.objects.create(message=instance, old_content=instance.content, new_content=instance.edited_content)
+        print(f"Message edited: {instance.content} to {instance.edited_content} by {instance.sender.all()}")
     else:
         print(f"New message being created: {instance.content} from {instance.sender.all()} to {instance.receiver.all()}")
 
