@@ -1,6 +1,7 @@
 from .models import Message , Notification ,MessageHistory
-from django.db.models.signals import post_save ,pre_save
+from django.db.models.signals import post_save ,pre_save ,post_delete
 from django.dispatch import receiver
+from django.contrib.auth.models import User
 
 
 
@@ -26,3 +27,10 @@ def message_saved(sender, instance, created, **kwargs):
 def notification_saved(sender, instance, created, **kwargs):
     if created:
         print(f"Notification created for user {instance.user.username} : {instance.message.content}")
+        
+        
+@receiver(post_delete, sender=User)
+def user_messages_deleted(sender, instance, **kwargs):
+    Message.objects.filter(sender=instance).delete()
+    Message.objects.filter(receiver=instance).delete()
+    Notification.objects.filter(user=instance).delete()
