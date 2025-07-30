@@ -18,7 +18,7 @@ class Notification(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     
     
-class MessageEditHistory(models.Model):
+class MessageHistory(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     old_content = models.TextField()
     new_content = models.TextField()
