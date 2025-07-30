@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from .models import Message 
 from .managers import UnreadMessagesManager
+from django.views.decorators.cache import cache_page
 
 # Create your views here.
 
@@ -18,6 +19,7 @@ def delete_user(request, user_id):
         return Response({"error": "User not found."}, status=404)
     
     
+@cache_page(60)  # Cache for 15 minutes
 def get_messages(request):
     """
     View to get all messages for the authenticated user.
