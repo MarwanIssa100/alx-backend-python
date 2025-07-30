@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .managers import UnreadMessagesManager
+
 # Create your models here.
 class Message(models.Model):
     sender  = models.ManyToManyField(User, related_name='sent_messages')
@@ -9,6 +11,9 @@ class Message(models.Model):
     unread = models.BooleanField(default=False)
     edited = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    
+    # Custom manager for unread messages
+    unread = UnreadMessagesManager()
     
     @classmethod
     def get_replies(cls):

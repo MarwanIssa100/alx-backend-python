@@ -36,6 +36,7 @@ def get_messages(request):
         })
     
     return Response({"messages": serialized_messages}, status=200)
+
 def thread_messages(request, message_id):
     """
     View to get the thread of messages for a given message ID.
@@ -51,7 +52,7 @@ def get_unread_messages(request):
     """
     View to get all unread messages for the authenticated user.
     """
-    unread_messages = UnreadMessagesManager().get_queryset().filter(receiver=request.user).only('content', 'sender')
+    unread_messages = Message.unread.unread_for_user(request.user)
     serialized_unread_messages = []
     
     for message in unread_messages:
