@@ -19,13 +19,13 @@ services:
     restart: unless-stopped
     networks:
       - messaging_network
-    command: ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: ["python3 manage.py runserver"]
 
   # MySQL Database
   db:
     image: mysql:8.0
     environment:
-      - MYSQL_DATABASE=messaging_app
+      - MYSQL_DB=messaging_app
       - MYSQL_USER=root
       - MYSQL_PASSWORD=123456
       - MYSQL_ROOT_PASSWORD=123456
