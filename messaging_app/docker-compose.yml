@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # Django Web Application
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=messaging_app.settings
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/messaging_app
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - messaging_network
+
+  # PostgreSQL Database
+  db:
+    image: postgres:15
+    environment:
+      - MYSQL_DB=messaging_app
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=123456
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - messaging_network
+
+ 
