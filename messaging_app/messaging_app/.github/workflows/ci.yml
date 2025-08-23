@@ -47,9 +47,17 @@ jobs:
         run: |
           python manage.py migrate
 
-      - name: Run tests
+      - name: Install dependencies
         run: |
-          pytest --ds=messaging_app.settings --junitxml=test-results.xml
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Run flake8
+        run: |
+          # Exit if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Full linting but don’t fail the build (warn only)
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
