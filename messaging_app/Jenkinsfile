@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    environment {
+        // Example: set Python version if you use pyenv/venv
+        VENV_DIR = ".venv"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/MarwanIssa100/alx-backend-python.git'
+            }
+        }
+
+        stage('Set up Python environment') {
+            steps {
+                sh '''
+                    python3 -m venv $VENV_DIR
+                    source $VENV_DIR/bin/activate
+                    pip install --upgrade pip
+                    pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                    source $VENV_DIR/bin/activate
+                    pytest --junitxml=reports/pytest-report.xml
+                '''
+            }
+        }
+
+        stage('Publish Report') {
+            steps {
+                junit 'reports/pytest-report.xml'
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'reports/**/*.xml', fingerprint: true
+        }
+        failure {
+            mail to: 'team@example.com',
+                subject: "Build Failed in Jenkins: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Check Jenkins for details: ${env.BUILD_URL}"
+        }
+    }
+}
